@@ -23,6 +23,15 @@ void i2c_task(void *p) {
 
     // TODO
     // read id chip BMP280
+    // Para o BMP280, o registrador de identificação (ID) é o 0xD0.
+    uint8_t reg_address = 0xD0;
+    
+    // Escreve o endereço do registrador no barramento I2C e mantém o controle do barramento (true)
+    i2c_write_blocking(i2c_default, BMP280_I2C_ADDRESS, &reg_address, 1, true);
+    // Lê 1 byte do registrador de ID
+    i2c_read_blocking(i2c_default, BMP280_I2C_ADDRESS, buffer, 1, false);
+    
+    // Imprime o valor lido (ex.: espera-se que o BMP280 retorne 0x58)
     printf("BMP280 ID: 0x%X \n", buffer[0]);
 
     while (1) {
