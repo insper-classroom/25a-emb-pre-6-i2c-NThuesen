@@ -1,4 +1,4 @@
-
+#include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
 #include <queue.h>
@@ -25,15 +25,16 @@ void i2c_task(void *p) {
 
     // read whoami
     uint8_t reg_address = 0x75;
+
     i2c_write_blocking(i2c_default, I2C_CHIP_ADDRESS, &reg_address, 1, true); // true to keep master control of bus
     i2c_read_blocking(i2c_default, I2C_CHIP_ADDRESS, buffer, 1, false);
     printf("WHOAMI: 0x%X \n", buffer[0]);
 
     // TODO
     // Leia o INT_ENABLE e imprima o valor
-    // Leitura do registrador INT_ENABLE (0x38) e impressão na serial
     reg_address = 0x38;
-    i2c_write_blocking(i2c_default, I2C_CHIP_ADDRESS, &reg_address, 1, true);
+    
+    i2c_write_blocking(i2c_default, I2C_CHIP_ADDRESS, &reg_address, 1, true); // true to keep master control of bus
     i2c_read_blocking(i2c_default, I2C_CHIP_ADDRESS, buffer, 1, false);
     printf("INT_ENABLE: 0x%X \n", buffer[0]);
 
